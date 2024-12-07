@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<!-- Hidden JSON data for JavaScript -->
+<script type="application/json"
+    id="departmentLabels">{{ department_revenue | map(attribute='department') | list | tojson }}</script>
+<script type="application/json"
+    id="departmentData">{{ department_revenue | map(attribute='total_revenue') | list | tojson }}</script>
+<script type="application/json" id="taxData">{{ tax_distribution | tojson }}</script>
+<script type="application/json" id="yearlyLabels">{{ yearly_trends | map(attribute='year') | list | tojson }}</script>
+<script type="application/json"
+    id="yearlyData">{{ yearly_trends | map(attribute='total_revenue') | list | tojson }}</script>
+
+<div class="row mt-4">
+    <!-- Total Revenue by Department -->
+    <div class="col-md-6">
+        <h4>Total de Recaudación por Departamento</h4>
+        <canvas id="departmentChart"></canvas>
+    </div>
+
+    <!-- Revenue Distribution by Tax -->
+    <div class="col-md-6">
+        <h4>Distribución de la Recaudación por Impuesto</h4>
+        <canvas id="taxChart"></canvas>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Revenue Trends by Year -->
+    <div class="col-md-12">
+        <h4>Tendencias de Recaudación por Año</h4>
+        <canvas id="yearlyChart"></canvas>
+    </div>
+</div>
+
+<!-- Include the external JavaScript file -->
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}

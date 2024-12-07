@@ -1,0 +1,42 @@
+# Virtual environments
+venv/
+*.pyc
+__pycache__/
+
+# Sensitive configuration files
+.env
+
+# Operating system-generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Python-generated files
+*.pyc
+*.pyo
+*.pyd
+*.~*
+
+# Temporary files and swap files
+*.tmp
+*.swp
+*.swo
+~*
+
+# Uploaded files and temporary data
+/uploads/
+uploads
+*.xlsx
+
+# IDE-related files
+.vscode/
+.idea/
+*.iml
+
+# Build and Docker-related files
+__pycache__/
+*.pid
+*.gz
+

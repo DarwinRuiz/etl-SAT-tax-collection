@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Carga de archivo de Recaudaciones Tributarias de SAT</h2>
+
+<!-- Show flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div>
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} mt-3">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="mt-4">
+    <div class="mb-3">
+        <label for="year" class="form-label">Seleccione el año</label>
+        <select name="year" id="year" class="form-select">
+            {% for year in range(2011, 2025) %}
+            <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="file" class="form-label">Cargar el archivo Excel</label>
+        <input type="file" name="file" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Procesar</button>
+</form>
+
+<!-- hidden spinner -->
+<div id="loadingSpinner" class="d-none text-center mt-4">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Procesando archivo, por favor espere...</p>
+</div>
+
+<script>
+    // Show spinner when submitting form
+    document.getElementById('uploadForm').addEventListener('submit', function () {
+        document.getElementById('loadingSpinner').classList.remove('d-none');
+        document.getElementById('uploadForm').classList.add('d-none');
+    });
+</script>
+{% endblock %}

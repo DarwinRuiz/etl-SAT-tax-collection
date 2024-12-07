@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Resumen de Recaudación</h2>
+
+    <!-- Filtros -->
+    <form id="filterForm" class="row g-3">
+        <div class="col-md-4">
+            <label for="activity" class="form-label">Actividad</label>
+            <select id="activity" class="form-select">
+                <option value="">Todas</option>
+
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="department" class="form-label">Departamento</label>
+            <select id="department" class="form-select">
+                <option value="">Todos</option>
+
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="year" class="form-label">Año</label>
+            <select id="year" class="form-select">
+                <option value="">Todos</option>
+
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </form>
+
+    <!-- Summary Table -->
+    <div class="table-responsive mt-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Actividad</th>
+                    <th>Departamento</th>
+                    <th>Año</th>
+                    <th>Total Recaudado (Q)</th>
+                </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='summary.js') }}"></script>
+    <script src="{{ url_for('static', filename='filters.js') }}"></script>
+</div>
+{% endblock %}

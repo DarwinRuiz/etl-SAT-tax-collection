@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mt-4">Monitoreo de Cargas</h2>
+<div class="table-responsive mt-4">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Archivo</th>
+                <th>Año</th>
+                <th>Fecha y Hora</th>
+                <th>Registros Totales</th>
+                <th>Duplicados</th>
+                <th>Estado</th>
+                <th>Error</th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody">
+            <!-- Data will be loaded dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Load logs from the API
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            const response = await fetch('/api/logs');
+            const logs = await response.json();
+
+            if (logs.error) {
+                alert(`Error al cargar logs: ${logs.error}`);
+                return;
+            }
+
+            const logTableBody = document.getElementById('logTableBody');
+            logs.forEach(log => {
+
+                const uploadDate = new Date(log.upload_time);
+                uploadDate.setHours(uploadDate.getHours() - 6);
+                const options = {
+                    timeZone: 'America/Guatemala',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                const localUploadTime = uploadDate.toLocaleString('es-GT', options);
+
+                const row = `
+                    <tr>
+                        <td>${log.file_name}</td>
+                        <td>${log.year}</td>
+                        <td>${localUploadTime}</td>
+                        <td>${log.total_records}</td>
+                        <td>${log.duplicates_detected}</td>
+                        <td>
+                            <span class="badge bg-${log.status === 'Success' ? 'success' : 'danger'}">
+                                ${log.status}
+                            </span>
+                        </td>
+                        <td>${log.error_message || 'N/A'}</td>
+                    </tr>
+                `;
+                logTableBody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error('Error al cargar logs:', error);
+            alert('Ocurrió un error al cargar los logs.');
+        }
+    });
+</script>
+{% endblock %}
